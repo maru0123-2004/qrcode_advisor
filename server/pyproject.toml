@@ -1,10 +1,11 @@
 [tool.poetry]
-name = "changeme"
+name = "qradviser"
 version = "0.0.1"
-description = "changeme"
-authors = ["Changeme <changeme@marusoftware.net>"]
+description = "QRCode Bus Stop or Station adviser "
+authors = ["Maruo.S <maruo@marusoftware.net>"]
 license = "MIT"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10.0"
@@ -29,7 +30,7 @@ tortoise-orm = {extras = ["asyncpg"], version = "^0.21.6"}
 
 
 [tool.aerich]
-tortoise_orm = "changeme.db.DB_CONFIG"
+tortoise_orm = "qradviser.db.DB_CONFIG"
 location = "./migrations"
 src_folder = "./."
 [build-system]

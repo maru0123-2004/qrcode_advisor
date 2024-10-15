@@ -15,4 +15,4 @@ RUN poetry install --no-cache --no-root --with dev --with postgres
 USER root
 EXPOSE 8000
 ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
-CMD poetry run aerich upgrade && poetry run uvicorn --host 0.0.0.0 --port 8000 --reload changeme:app
+CMD poetry run aerich upgrade && poetry run uvicorn --host 0.0.0.0 --port 8000 --reload qradviser:app
