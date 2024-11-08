@@ -33,5 +33,8 @@
 		"typescript": "^5.0.0",
 		"vite": "^5.2.14"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"qrcode-scanner-svelte": "^1.0.0"
+	}
 }
