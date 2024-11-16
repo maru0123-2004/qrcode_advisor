@@ -9,14 +9,14 @@ token=environ.get("ODPT_TOKEN", None)
 
 parser=argparse.ArgumentParser()
 parser.add_argument("company")
-parser.add_argument("token", default=token)
+parser.add_argument("-token", default=token, required=False)
 args=parser.parse_args()
-token=parser.token
+token=args.token
 
 client=Client("http://api.odpt.org/api/v4/")
 
 from qradviser.db import DB_CONFIG
-from qradviser.models.db import Line, Stop
+from qradviser.models.db import Line, Stop, LineStop
 from tortoise import Tortoise, run_async
 async def main():
     await Tortoise.init(DB_CONFIG)
@@ -33,10 +33,10 @@ async def main():
         return
     lines: List[BusroutePattern]
     for line in lines:
-        l=await Line.create(name=line.dctitle, company=line.odptoperator, odpt_id=line.id) 
+        l=await Line.create(name=line.dctitle, company=line.odptoperator, odpt_id=line.id)
         for pole in line.odptbusstop_pole_order:
             if not pole.odptbusstop_pole in stops_db:
-                print(pole.odptbusstop_pole)
+                print("Line not found:", pole.odptbusstop_pole)
                 continue
-            await l.stops.add(stops_db[pole.odptbusstop_pole])
+            await LineStop.get_or_create({"order":pole.odptindex}, line=l, stop=stops_db[pole.odptbusstop_pole])
 run_async(main())
