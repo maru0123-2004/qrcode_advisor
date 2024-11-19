@@ -2,63 +2,121 @@ import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
 
-import type { Token } from './models';
+import type { Body_Auth_signin, Token, User, UserCreate, StopData } from './models';
 
-export type AuthData = {};
+export type AuthData = {
+	AuthSignin: {
+		formData: Body_Auth_signin;
+	};
+	AuthSignup: {
+		requestBody: UserCreate;
+	};
+};
+
+export type SearchData = {
+	SearchSearch: {
+		searchWord: string;
+	};
+};
 
 export class AuthService {
 	/**
-	 * Login
-	 * Generate login url and redirect
-	 * @throws ApiError
-	 */
-	public static authLogin(): CancelablePromise<void> {
-		return __request(OpenAPI, {
-			method: 'GET',
-			url: '/auth/login',
-			errors: {
-				307: `Successful Response`
-			}
-		});
-	}
-
-	/**
-	 * Callback
-	 * Process login response from Google and return user info
-	 * @throws ApiError
-	 */
-	public static authCallback(): CancelablePromise<void> {
-		return __request(OpenAPI, {
-			method: 'GET',
-			url: '/auth/callback',
-			errors: {
-				307: `Successful Response`
-			}
-		});
-	}
-
-	/**
-	 * Token
-	 * Get infomation(and token) of user
+	 * Signin
 	 * @returns Token Successful Response
 	 * @throws ApiError
 	 */
-	public static authToken(): CancelablePromise<Token> {
+	public static authSignin(data: AuthData['AuthSignin']): CancelablePromise<Token> {
+		const { formData } = data;
 		return __request(OpenAPI, {
-			method: 'GET',
-			url: '/auth/token'
+			method: 'POST',
+			url: '/auth/signin',
+			formData: formData,
+			mediaType: 'application/x-www-form-urlencoded',
+			errors: {
+				400: `Bad Request`,
+				401: `Unauthorized`,
+				404: `Not Found`,
+				422: `Validation Error`
+			}
 		});
 	}
 
 	/**
-	 * Logout
+	 * Signup
+	 * @returns User Successful Response
+	 * @throws ApiError
+	 */
+	public static authSignup(data: AuthData['AuthSignup']): CancelablePromise<User> {
+		const { requestBody } = data;
+		return __request(OpenAPI, {
+			method: 'POST',
+			url: '/auth/signup',
+			body: requestBody,
+			mediaType: 'application/json',
+			errors: {
+				400: `Bad Request`,
+				401: `Unauthorized`,
+				404: `Not Found`,
+				422: `Validation Error`
+			}
+		});
+	}
+
+	/**
+	 * Signout
 	 * @returns unknown Successful Response
 	 * @throws ApiError
 	 */
-	public static authLogout(): CancelablePromise<unknown> {
+	public static authSignout(): CancelablePromise<unknown> {
 		return __request(OpenAPI, {
 			method: 'POST',
-			url: '/auth/logout'
+			url: '/auth/signout',
+			errors: {
+				400: `Bad Request`,
+				401: `Unauthorized`,
+				404: `Not Found`
+			}
+		});
+	}
+
+	/**
+	 * Session
+	 * @returns Token Successful Response
+	 * @throws ApiError
+	 */
+	public static authSession(): CancelablePromise<Array<Token>> {
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/auth/session',
+			errors: {
+				400: `Bad Request`,
+				401: `Unauthorized`,
+				404: `Not Found`
+			}
+		});
+	}
+}
+
+export class SearchService {
+	/**
+	 * Search
+	 * @returns StopData Successful Response
+	 * @throws ApiError
+	 */
+	public static searchSearch(data: SearchData['SearchSearch']): CancelablePromise<Array<StopData>> {
+		const { searchWord } = data;
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/search/',
+			query: {
+				search_word: searchWord
+			},
+			errors: {
+				400: `Bad Request`,
+				401: `Unauthorized`,
+				404: `Not Found`,
+				422: `Validation Error`
+			}
 		});
 	}
 }
