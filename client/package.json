@@ -35,6 +35,13 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@material/dom": "^14.0.0",
+		"@material/rtl": "^14.0.0",
+		"@material/theme": "^14.0.0",
+		"@peerpiper/qrcode-scanner-svelte": "^1.0.7",
+		"@smui/checkbox": "^8.0.0-beta.0",
+		"@smui/icon-button": "^8.0.0-beta.0",
+		"@smui/top-app-bar": "^8.0.0-beta.0",
 		"qrcode-scanner-svelte": "^1.0.0"
 	}
 }
