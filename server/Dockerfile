@@ -2,6 +2,7 @@ FROM python:3.10.9-slim
 
 WORKDIR /usr/src/app/server
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install git -y && apt clean
 RUN adduser --system --shell /bin/bash nonroot && \
     pip install --no-cache-dir --upgrade poetry wheel pysu && \
     chmod +rx /usr/local/bin/docker-entrypoint.sh
