@@ -1,34 +1,37 @@
 <script lang="ts">
     // 停留所検索のロジック
     let searchQuery: string = ''; // ユーザーが入力した検索クエリ
-    let stops: string[] = ['品川シーサイド', '鮫洲', '青物横丁', '大井町']; // 停留所データ
-    let filteredStops: string[] = []; // フィルタリングされた候補リスト
-    let selectedStop: string = ''; // 選択された停留所
-
+    let stops: StopData[];
+    let filteredStops: StopData[] = []; // フィルタリングされた候補リスト
+    let selectedStop: StopData|undefined = undefined; // 選択された停留所
+    onMount(async () => {
+        stops=await SearchService.searchSearch({searchWord:""})
+    })
     function searchStops() {
         if (searchQuery.length > 0) {
-            filteredStops = stops.filter(stop =>
-                stop.includes(searchQuery) // 入力値に含まれる停留所を検索
-            );
+            filteredStops=stops.filter((v)=>v.name.includes(searchQuery))
         } else {
             filteredStops = [];
         }
     }
 
-    function selectStop(stop: string) {
+    function selectStop(stop: StopData) {
         selectedStop = stop; // 選択された停留所を保存
+        searchQuery = stop.name;
         filteredStops = []; // 候補リストをクリア
     }
 
     function goToCamera() {
         if (selectedStop) {
-            goto("/qr")
+            goto("/qr?stop_id="+selectedStop.stop_id)
         } else {
             alert('停留所を選択してください。');
         }
     }
 
 	import { goto } from '$app/navigation';
+	import { SearchService, type StopData } from '$lib/openapi';
+	import { onMount } from 'svelte';
     
     
 </script>
@@ -57,7 +60,7 @@
                                 type="button"
                                 on:click={() => selectStop(stop)}
                             >
-                                {stop}
+                                {stop.name}
                             </button>
                         </li>
                     {/each}
@@ -67,7 +70,7 @@
 
         <!-- 選択された停留所の表示 -->
         {#if selectedStop}
-            <p class="mt-4">選択された停留所: <strong>{selectedStop}</strong></p>
+            <p class="mt-4">選択された停留所: <strong>{selectedStop.name}</strong></p>
         {/if}
 
         <!-- カメラを起動ボタン -->
