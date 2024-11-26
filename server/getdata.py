@@ -2,7 +2,8 @@ from os import environ
 import argparse
 from typing import List
 from python_odpt import Client
-from python_odpt.api.default import busroute_pattern_operations_get_busroute_patterns, busstop_pole_operations_get_busstop_poles
+from python_odpt.api.default import busroute_pattern_operations_get_busroute_patterns
+from python_odpt.api.default import data_dump_operations_dump
 from python_odpt.models import BusroutePattern, BusstopPole
 
 token=environ.get("ODPT_TOKEN", None)
@@ -13,20 +14,22 @@ parser.add_argument("-token", default=token, required=False)
 args=parser.parse_args()
 token=args.token
 
-client=Client("http://api.odpt.org/api/v4/")
+client=Client("http://api.odpt.org/api/v4/", follow_redirects=True)
 
 from qradviser.db import DB_CONFIG
 from qradviser.models.db import Line, Stop, LineStop
 from tortoise import Tortoise, run_async
 async def main():
     await Tortoise.init(DB_CONFIG)
-    stops=await busstop_pole_operations_get_busstop_poles.asyncio(client=client, aclconsumer_key=token, odptoperator=args.company)
-    if not stops:
+    res=await data_dump_operations_dump.asyncio(client=client, aclconsumer_key=token, rdf_type="odpt:BusstopPole")
+    if not res:
         return
-    stops: List[BusstopPole]
+    stops: List[BusstopPole]=res
     stops_db={}
     for stop in stops:
-        st=await Stop.create(odpt_id=stop.owlsame_as,name=stop.dctitle)
+        if args.company not in stop.odptoperator:
+            continue
+        st=await Stop.create(odpt_id=stop.owlsame_as,name=stop.dctitle,pole_number=stop.odptbusstop_pole_number)
         stops_db[st.odpt_id]=st
     lines=await busroute_pattern_operations_get_busroute_patterns.asyncio(client=client, aclconsumer_key=token, odptoperator=args.company)
     if not lines:
