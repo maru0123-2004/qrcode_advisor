@@ -7,9 +7,10 @@
     onMount(async () => {
         stops=await SearchService.searchSearch({searchWord:""})
     })
-    function searchStops() {
+    async function searchStops() {
         if (searchQuery.length > 0) {
-            filteredStops=stops.filter((v)=>v.name.includes(searchQuery))
+            filteredStops=await SearchService.searchSearch({searchWord:searchQuery})
+            //filteredStops=stops.filter((v)=>v.name.includes(searchQuery))
         } else {
             filteredStops = [];
         }
@@ -53,7 +54,7 @@
             <!-- 検索候補の表示 -->
             {#if filteredStops.length > 0}
                 <ul class="absolute left-0 mt-2 w-full bg-white border border-gray-200 rounded shadow-lg">
-                    {#each filteredStops as stop}
+                    {#each filteredStops as stop (stop.stop_id)}
                         <li>
                             <button 
                                 class="block w-full text-left p-2 hover:bg-gray-100"
