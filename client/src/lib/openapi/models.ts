@@ -29,6 +29,7 @@ export type NotFound = {
 export type StopData = {
 	stop_id: string;
 	name: string;
+	pole_number: string;
 };
 
 export type Token = {

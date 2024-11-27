@@ -15,11 +15,11 @@ router=APIRouter(tags=["CheckStop"])
 crypt=CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.post("/", response_model=bool)
-async def checkStop(dest_id: UUID, data: str):
+async def checkStop(dest_id: UUID, qrdata: str):
     dest = await Stop.get_or_none(id=dest_id)
     if dest is None:
         raise NotFound(detail="destination stop is not found")
-    splited_data=data.split(".")
+    splited_data=qrdata.split(".")
     bus = await get_bus(".".join(splited_data[:-1]), splited_data[-1])
     if bus is None:
         raise NotFound(detail="no such bus found")

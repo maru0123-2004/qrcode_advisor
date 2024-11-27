@@ -1,11 +1,20 @@
-<script>
+<script lang="ts">
   import Button from "flowbite-svelte/Button.svelte";
   import Card from "flowbite-svelte/Card.svelte";
   import Modal from "flowbite-svelte/Modal.svelte";
   import ArrowRightOutline from 'flowbite-svelte-icons/ArrowRightOutline.svelte';
+	import { onMount } from "svelte";
+	import { CheckStopService } from "$lib/openapi";
+	import type { PageData } from "./$types";
 
+  export let data:PageData;
   let isModalOpen = false;
-
+  let checkResult:boolean=false;
+  onMount(async () => {
+    if (data.destId && data.qrdata){
+      checkResult=await CheckStopService.checkStopCheckStop({destId:data.destId, qrdata:data.qrdata})
+    }
+  })
   // モーダルを開く
   function openModal() {
     isModalOpen = true;
@@ -52,16 +61,22 @@
 <div class="center-container">
   <div class="card-container">
     <Card>
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        このバスは目的地へ行きます
-      </h5>
-      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-        途中バス停を見る場合はボタンをクリックしてください。
-      </p>
-      <Button class="w-fit mx-auto" on:click={openModal}>
-        途中バス停を見る
-        <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-      </Button>
+      {#if checkResult}
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          このバスは目的地へ行きます
+        </h5>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
+          途中バス停を見る場合はボタンをクリックしてください。
+        </p>
+        <Button class="w-fit mx-auto" on:click={openModal}>
+          途中バス停を見る
+          <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
+        </Button>
+      {:else}
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          このバスは目的地へ行きません
+        </h5>
+      {/if}
     </Card>
   </div>
 </div>

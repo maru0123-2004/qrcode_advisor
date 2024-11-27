@@ -24,7 +24,7 @@
 
     function goToCamera() {
         if (selectedStop) {
-            goto("/qr?stop_id="+selectedStop.stop_id)
+            goto("/qr?dest_id="+selectedStop.stop_id)
         } else {
             alert('停留所を選択してください。');
         }
@@ -61,7 +61,7 @@
                                 type="button"
                                 on:click={() => selectStop(stop)}
                             >
-                                {stop.name}
+                                {stop.name} ({stop.pole_number})
                             </button>
                         </li>
                     {/each}

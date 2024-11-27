@@ -25,11 +25,11 @@
 	}
 </script>
 <Navbar>
-	<NavBrand href="/" class="dark:bg-gray-500 rounded">
+	<NavBrand href="/" class="dark:bg-gray-500">
 		<img src="/logo.png" alt="Logo" class="m-1 h-6 sm:h-9" />
 		<img src="/title.png" alt="Title" class="m-1 h-6 sm:h-9" />
 	</NavBrand>
-	<NavHamburger />
+	<!-- <NavHamburger /> -->
 	<NavUl>
 		<NavLi href="/admin">Admin</NavLi>
 		{#if $user}

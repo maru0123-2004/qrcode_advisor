@@ -13,7 +13,7 @@
   const successfulScan = async (e: CustomEvent<string>) => {
     result = e.detail; // スキャンしたQRコードのデータを格納
     if (result) {
-        goto(`/result?stop_id=${data.stop_id}&result=${result}`)
+        goto(`/result?dest_id=${data.dest_id}&qrdata=${result}`)
     }
   };
 
