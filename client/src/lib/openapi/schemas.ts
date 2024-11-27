@@ -109,6 +109,10 @@ export const $StopData = {
 		name: {
 			type: 'string',
 			isRequired: true
+		},
+		pole_number: {
+			type: 'string',
+			isRequired: true
 		}
 	}
 } as const;

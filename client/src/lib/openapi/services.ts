@@ -19,6 +19,13 @@ export type SearchData = {
 	};
 };
 
+export type CheckStopData = {
+	CheckStopCheckStop: {
+		destId: string;
+		qrdata: string;
+	};
+};
+
 export class AuthService {
 	/**
 	 * Signin
@@ -110,6 +117,33 @@ export class SearchService {
 			url: '/search/',
 			query: {
 				search_word: searchWord
+			},
+			errors: {
+				400: `Bad Request`,
+				401: `Unauthorized`,
+				404: `Not Found`,
+				422: `Validation Error`
+			}
+		});
+	}
+}
+
+export class CheckStopService {
+	/**
+	 * Checkstop
+	 * @returns boolean Successful Response
+	 * @throws ApiError
+	 */
+	public static checkStopCheckStop(
+		data: CheckStopData['CheckStopCheckStop']
+	): CancelablePromise<boolean> {
+		const { destId, qrdata } = data;
+		return __request(OpenAPI, {
+			method: 'POST',
+			url: '/checkstop/',
+			query: {
+				dest_id: destId,
+				qrdata
 			},
 			errors: {
 				400: `Bad Request`,

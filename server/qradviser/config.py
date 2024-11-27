@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     SECRET:str =secrets.token_urlsafe(15)
     timedelta:_timedelta = _timedelta(hours=1)
     SERVE_STATIC:Optional[str]=None
+    ODPT_TOKEN: str=""
     
     class Config:
         env_file = ".env"

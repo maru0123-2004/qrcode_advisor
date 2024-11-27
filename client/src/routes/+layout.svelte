@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { DarkMode, NavBrand, NavHamburger, NavLi, NavUl, Navbar } from 'flowbite-svelte';
+	import DarkMode from "flowbite-svelte/DarkMode.svelte";
+	import NavBrand from "flowbite-svelte/NavBrand.svelte";
+	import NavHamburger from "flowbite-svelte/NavContainer.svelte";
+	import NavLi from "flowbite-svelte/NavLi.svelte";
+	import NavUl from "flowbite-svelte/NavUl.svelte";
+	import Navbar from "flowbite-svelte/Navbar.svelte";
 	import '../app.pcss';
 	import { AuthService, OpenAPI } from '$lib/openapi';
 	import { goto } from '$app/navigation';
@@ -13,18 +18,18 @@
 
 	const logout=async (e: Event) => {
 		e.preventDefault();
-		await AuthService.authLogout()
+		await AuthService.authSignout();
 		user.set(undefined)
 		OpenAPI.TOKEN=undefined
 		await goto('/')
 	}
 </script>
 <Navbar>
-	<NavBrand href="/" class="dark:bg-gray-500 rounded">
+	<NavBrand href="/" class="dark:bg-gray-500">
 		<img src="/logo.png" alt="Logo" class="m-1 h-6 sm:h-9" />
 		<img src="/title.png" alt="Title" class="m-1 h-6 sm:h-9" />
 	</NavBrand>
-	<NavHamburger />
+	<!-- <NavHamburger /> -->
 	<NavUl>
 		<NavLi href="/admin">Admin</NavLi>
 		{#if $user}
