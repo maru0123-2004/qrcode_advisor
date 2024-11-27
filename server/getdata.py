@@ -29,14 +29,16 @@ async def main():
     for stop in stops:
         if args.company not in stop.odptoperator:
             continue
-        st=await Stop.create(odpt_id=stop.owlsame_as,name=stop.dctitle,pole_number=stop.odptbusstop_pole_number)
+        st,_=await Stop.get_or_create({"name":stop.dctitle,"pole_number":stop.odptbusstop_pole_number}, odpt_id=stop.owlsame_as)
         stops_db[st.odpt_id]=st
-    lines=await busroute_pattern_operations_get_busroute_patterns.asyncio(client=client, aclconsumer_key=token, odptoperator=args.company)
+    lines=await data_dump_operations_dump.asyncio(client=client, aclconsumer_key=token, rdf_type="odpt:BusroutePattern")
     if not lines:
         return
     lines: List[BusroutePattern]
     for line in lines:
-        l=await Line.create(name=line.dctitle, company=line.odptoperator, odpt_id=line.id)
+        if args.company != line.odptoperator:
+            continue
+        l,_=await Line.get_or_create({"name":line.dctitle, "company":line.odptoperator}, odpt_id=line.owlsame_as)
         for pole in line.odptbusstop_pole_order:
             if not pole.odptbusstop_pole in stops_db:
                 print("Line not found:", pole.odptbusstop_pole)
