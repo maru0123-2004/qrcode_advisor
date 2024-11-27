@@ -1,22 +1,19 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
   import { Scanner } from "@peerpiper/qrcode-scanner-svelte";
-  import { onMount } from "svelte";
+  import type { PageData } from './$types';
 
+	export let data: PageData;
   let result: string | null = null;
   let isLoading: boolean = false;
-
   /**
    * QRコードスキャン成功時の処理
-   * @param {Event} e - スキャンイベント
+   * @param {CustomEvent<string>} e - スキャンイベント
    */
-  const successfulScan = async (e: Event) => {
+  const successfulScan = async (e: CustomEvent<string>) => {
     result = e.detail; // スキャンしたQRコードのデータを格納
-    console.log("スキャン結果:", result);
-
     if (result) {
-      
-        goto("/reslut")
+        goto(`/result?stop_id=${data.stop_id}&result=${result}`)
     }
   };
 
