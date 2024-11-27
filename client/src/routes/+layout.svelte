@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { DarkMode, NavBrand, NavHamburger, NavLi, NavUl, Navbar } from 'flowbite-svelte';
+	import DarkMode from "flowbite-svelte/DarkMode.svelte";
+	import NavBrand from "flowbite-svelte/NavBrand.svelte";
+	import NavHamburger from "flowbite-svelte/NavContainer.svelte";
+	import NavLi from "flowbite-svelte/NavLi.svelte";
+	import NavUl from "flowbite-svelte/NavUl.svelte";
+	import Navbar from "flowbite-svelte/Navbar.svelte";
 	import '../app.pcss';
 	import { AuthService, OpenAPI } from '$lib/openapi';
 	import { goto } from '$app/navigation';
@@ -13,7 +18,7 @@
 
 	const logout=async (e: Event) => {
 		e.preventDefault();
-		await AuthService.authLogout()
+		await AuthService.authSignout();
 		user.set(undefined)
 		OpenAPI.TOKEN=undefined
 		await goto('/')

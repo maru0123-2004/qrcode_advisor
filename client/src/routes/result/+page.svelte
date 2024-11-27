@@ -1,6 +1,8 @@
 <script>
-  import { Button, Card, Modal } from 'flowbite-svelte';
-  import { ArrowRightOutline } from 'flowbite-svelte-icons';
+  import Button from "flowbite-svelte/Button.svelte";
+  import Card from "flowbite-svelte/Card.svelte";
+  import Modal from "flowbite-svelte/Modal.svelte";
+  import ArrowRightOutline from 'flowbite-svelte-icons/ArrowRightOutline.svelte';
 
   let isModalOpen = false;
 
