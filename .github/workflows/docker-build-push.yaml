@@ -123,9 +123,9 @@ jobs:
   clean:
     permissions:
       packages: write
-    runs-on: [self-hosted, Linux]
+    runs-on: [self-hosted, Linux, ghcrclean]
     needs:
-      - buildx
+      - merge
     steps:
       - name: Clean untagged images
         uses: quartx-analytics/ghcr-cleaner@v1
