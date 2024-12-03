@@ -4,6 +4,7 @@ import { writable } from "svelte/store";
 
 export const prerender = true
 export const ssr = false
+export const trailingSlash = 'always';
 
 const user = writable<Token|undefined>(undefined);
 
