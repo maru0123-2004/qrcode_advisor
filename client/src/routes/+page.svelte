@@ -46,14 +46,14 @@
         <div class="relative">
             <input 
                 type="text"
-                class="input input-bordered w-full"
+                class="input input-bordered w-full dark:bg-black"
                 bind:value={searchQuery}
                 on:input={searchStops}
                 placeholder="停留所を検索"
             />
             <!-- 検索候補の表示 -->
             {#if filteredStops.length > 0}
-                <ul class="absolute left-0 mt-2 w-full bg-white border border-gray-200 rounded shadow-lg">
+                <ul class="absolute left-0 mt-2 w-full bg-white dark:bg-black border border-gray-200 rounded shadow-lg">
                     {#each filteredStops as stop (stop.stop_id)}
                         <li>
                             <button 
