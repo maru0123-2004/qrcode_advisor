@@ -120,19 +120,19 @@ jobs:
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf '${{ env.REPO_LC }}@sha256:%s ' *)
-  clean:
-    permissions:
-      packages: write
-    runs-on: [self-hosted, Linux, ghcrclean]
-    needs:
-      - merge
-    steps:
-      - name: Clean untagged images
-        uses: quartx-analytics/ghcr-cleaner@v1
-        with:
-            owner-type: user
-            token: ${{ secrets.GITHUB_TOKEN }}
-            repository-owner: ${{ github.repository_owner }}
-            repository-name: ${{ github.repository}}
-            package-name: ${{ env.REPO_LC }}
-            delete-untagged: true
+  # clean:
+  #   permissions:
+  #     packages: write
+  #   runs-on: [self-hosted, Linux, ghcrclean]
+  #   needs:
+  #     - merge
+  #   steps:
+  #     - name: Clean untagged images
+  #       uses: quartx-analytics/ghcr-cleaner@v1
+  #       with:
+  #           owner-type: user
+  #           token: ${{ secrets.GITHUB_TOKEN }}
+  #           repository-owner: ${{ github.repository_owner }}
+  #           repository-name: ${{ github.repository}}
+  #           package-name: ${{ env.REPO_LC }}
+  #           delete-untagged: true
