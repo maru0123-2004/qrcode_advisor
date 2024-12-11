@@ -57,11 +57,11 @@
                     {#each filteredStops as stop (stop.stop_id)}
                         <li>
                             <button 
-                                class="block w-full text-left p-2 hover:bg-gray-100"
+                                class="block w-full text-left p-2 hover:bg-gray-100 dark:hover:text-black"
                                 type="button"
                                 on:click={() => selectStop(stop)}
                             >
-                                {stop.name} ({stop.pole_number})
+                                {stop.name}
                             </button>
                         </li>
                     {/each}

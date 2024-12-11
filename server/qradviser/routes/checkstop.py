@@ -1,18 +1,12 @@
-from typing import List
 from uuid import UUID
 from fastapi import APIRouter
 from ..exceptions import APIError, NotFound
 from .bus import get_bus
-from passlib.context import CryptContext
-
-from tortoise.expressions import Q
 
 from ..models.db.stop import Stop
-from ..models.db.line import Line
 from ..models.db.line_to_stop import LineStop
 
 router=APIRouter(tags=["CheckStop"])
-crypt=CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.post("/", response_model=bool)
 async def checkStop(dest_id: UUID, qrdata: str):
@@ -23,8 +17,8 @@ async def checkStop(dest_id: UUID, qrdata: str):
     bus = await get_bus(".".join(splited_data[:-1]), splited_data[-1])
     if bus is None:
         raise NotFound(detail="no such bus found")
-    start_ls = await LineStop.get_or_none(stop__odpt_id=bus.odptstarting_busstop_pole, line__odpt_id=bus.odptbusroute_pattern)
-    end_ls = await LineStop.get_or_none(stop__odpt_id=bus.odptterminal_busstop_pole, line__odpt_id=bus.odptbusroute_pattern)
+    start_ls = await LineStop.get_or_none(stop__odpt_ids__contains=bus.odptstarting_busstop_pole, line__odpt_id=bus.odptbusroute_pattern)
+    end_ls = await LineStop.get_or_none(stop__odpt_id__contains=bus.odptterminal_busstop_pole, line__odpt_id=bus.odptbusroute_pattern)
     if start_ls is None or end_ls is None:
         raise APIError(status_code=500, detail="conflicted")
     dest_ls = await LineStop.get_or_none(stop=dest, line__odpt_id=bus.odptbusroute_pattern)
