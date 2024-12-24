@@ -15,12 +15,16 @@
     let password="";
     const onSubmit=async (e:SubmitEvent) => {
         e.preventDefault()
+        try{
         const token=await AuthService.authSignin({formData:{username,password}})
         user.set(token);
         OpenAPI.TOKEN=token.access_token
         username="";
         password="";
         goto("/");
+        } catch(e){
+            console.error(e)
+        }
     }
     onMount(async () => {
         if($user){

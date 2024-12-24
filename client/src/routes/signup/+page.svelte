@@ -5,18 +5,14 @@
     import Heading from "flowbite-svelte/Heading.svelte";
     import Input from "flowbite-svelte/Input.svelte";
     import Label from "flowbite-svelte/Label.svelte";
-	import type { PageData } from "./$types";
-	import { onMount } from "svelte";
 	import { goto } from "$app/navigation";
-    export let data:PageData;
-
-    const user=data.user;
+    
     let username="";
     let password="";
     let mail="";
     const onSubmit=async (e:SubmitEvent) => {
         e.preventDefault()
-        user.set(await AuthService.authSignup({requestBody:{name:username, password, mail}}));
+        await AuthService.authSignup({requestBody:{name:username, password, mail}});
         username="";
         password="";
         mail="";

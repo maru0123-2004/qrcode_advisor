@@ -2,7 +2,7 @@ import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
 
-import type { Body_Auth_signin, Token, User, UserCreate, StopData } from './models';
+import type { Body_Auth_signin, Token, User, UserCreate, StopData, Operator } from './models';
 
 export type AuthData = {
 	AuthSignin: {
@@ -25,6 +25,8 @@ export type CheckStopData = {
 		qrdata: string;
 	};
 };
+
+export type AdminData = {};
 
 export class AuthService {
 	/**
@@ -150,6 +152,25 @@ export class CheckStopService {
 				401: `Unauthorized`,
 				404: `Not Found`,
 				422: `Validation Error`
+			}
+		});
+	}
+}
+
+export class AdminService {
+	/**
+	 * Companies
+	 * @returns Operator Successful Response
+	 * @throws ApiError
+	 */
+	public static adminCompanies(): CancelablePromise<Array<Operator>> {
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/admin/companies',
+			errors: {
+				400: `Bad Request`,
+				401: `Unauthorized`,
+				404: `Not Found`
 			}
 		});
 	}

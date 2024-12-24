@@ -18,7 +18,7 @@ async def checkStop(dest_id: UUID, qrdata: str):
     if bus is None:
         raise NotFound(detail="no such bus found")
     start_ls = await LineStop.get_or_none(stop__odpt_ids__contains=bus.odptstarting_busstop_pole, line__odpt_id=bus.odptbusroute_pattern)
-    end_ls = await LineStop.get_or_none(stop__odpt_id__contains=bus.odptterminal_busstop_pole, line__odpt_id=bus.odptbusroute_pattern)
+    end_ls = await LineStop.get_or_none(stop__odpt_ids__contains=bus.odptterminal_busstop_pole, line__odpt_id=bus.odptbusroute_pattern)
     if start_ls is None or end_ls is None:
         raise APIError(status_code=500, detail="conflicted")
     dest_ls = await LineStop.get_or_none(stop=dest, line__odpt_id=bus.odptbusroute_pattern)

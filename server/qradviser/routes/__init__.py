@@ -10,3 +10,6 @@ router.include_router(search_router, prefix="/search")
 
 from .checkstop import router as checkstop_router
 router.include_router(checkstop_router, prefix="/checkstop")
+
+from .admin import router as admin_router
+router.include_router(admin_router, prefix="/admin")
