@@ -20,6 +20,6 @@ def findlcs(str1, str2):
 @router.get("/", response_model=List[StopData])
 async def search(search_word: str):
     stops = await Stop.filter(name__contains=search_word)
-    stopdatas = [(StopData(stop_id=stop.id, name=stop.name, pole_number=stop.pole_number), findlcs(search_word, stop.name)) for stop in stops]
+    stopdatas = [(StopData(stop_id=stop.id, name=stop.name), findlcs(search_word, stop.name)) for stop in stops]
     stopdatas.sort(key=lambda x:x[1], reverse=True)
     return [i[0] for i in stopdatas]

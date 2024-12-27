@@ -42,7 +42,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f9fafb;
+    /* background-color: #f9fafb; */
   }
 
   .card-container {

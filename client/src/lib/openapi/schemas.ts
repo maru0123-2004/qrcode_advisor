@@ -99,6 +99,19 @@ export const $NotFound = {
 	}
 } as const;
 
+export const $Operator = {
+	properties: {
+		id: {
+			type: 'string',
+			isRequired: true
+		},
+		name: {
+			type: 'string',
+			isRequired: true
+		}
+	}
+} as const;
+
 export const $StopData = {
 	properties: {
 		stop_id: {
@@ -107,10 +120,6 @@ export const $StopData = {
 			format: 'uuid'
 		},
 		name: {
-			type: 'string',
-			isRequired: true
-		},
-		pole_number: {
 			type: 'string',
 			isRequired: true
 		}
