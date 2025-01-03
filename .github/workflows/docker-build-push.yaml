@@ -13,11 +13,12 @@ concurrency:
   cancel-in-progress: true
 jobs:
   buildx:
+    continue-on-error: true
+    timeout-minutes: 5
     runs-on:
       - self-hosted
       - ${{ matrix.platform }}
     strategy:
-      fail-fast: false
       matrix:
         platform:
           - linux/amd64
