@@ -1,12 +1,28 @@
 from uuid import UUID
 from fastapi import APIRouter
-from ..exceptions import APIError, NotFound
-from .bus import get_bus
+from typing import List, Union
+from python_odpt import Client
+from python_odpt.api.default import bus_operation_get_buses
+from python_odpt.models import Bus
 
+from ..exceptions import APIError, NotFound
 from ..models.db.stop import Stop
 from ..models.db.line_to_stop import LineStop
+from ..config import Settings
 
 router=APIRouter(tags=["CheckStop"])
+client=Client("http://api.odpt.org/api/v4/")
+
+async def get_bus(operator:str, number:int) -> Union[Bus, None]:
+    buses:List[Bus]=await bus_operation_get_buses.asyncio(client=client, aclconsumer_key=Settings().ODPT_TOKEN, odptoperator=operator)
+    try:
+        for bus in buses:
+            if bus.odptbus_number == number:
+                return bus
+        else:
+            return None
+    except:
+        return None
 
 @router.post("/", response_model=bool)
 async def checkStop(dest_id: UUID, qrdata: str):
