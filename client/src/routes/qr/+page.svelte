@@ -2,6 +2,7 @@
 	import { goto } from "$app/navigation";
   import { Scanner } from "@peerpiper/qrcode-scanner-svelte";
   import type { PageData } from './$types';
+	import { showNotification } from "$lib/notification";
 
 	export let data: PageData;
   let result: string | null = null;
@@ -33,7 +34,7 @@
       return data?.found ?? false;
     } catch (error) {
       console.error("検索中にエラーが発生しました:", error);
-      alert("検索処理中に問題が発生しました。もう一度お試しください。");
+      showNotification({title:"Error",subtitle:"検索処理中に問題が発生しました。もう一度お試しください。",kind:"warn"});
       return false;
     }
   };

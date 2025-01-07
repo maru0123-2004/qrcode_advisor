@@ -8,6 +8,7 @@
 	import type { PageData } from "./$types";
 	import { onMount } from "svelte";
 	import { goto } from "$app/navigation";
+	import { showNotification } from "$lib/notification";
     export let data:PageData;
 
     const user=data.user;
@@ -21,6 +22,7 @@
         OpenAPI.TOKEN=token.access_token
         username="";
         password="";
+        showNotification({title:"Login Successful!", kind:"info"})
         goto("/");
         } catch(e){
             console.error(e)

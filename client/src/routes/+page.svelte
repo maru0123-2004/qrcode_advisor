@@ -26,11 +26,12 @@
         if (selectedStop) {
             goto("/qr?dest_id="+selectedStop.stop_id)
         } else {
-            alert('停留所を選択してください。');
+            showNotification({title:"Error",subtitle:'停留所を選択してください。',kind:"warn"});
         }
     }
 
 	import { goto } from '$app/navigation';
+	import { showNotification } from '$lib/notification';
 	import { SearchService, type StopData } from '$lib/openapi';
 	import { onMount } from 'svelte';
     
