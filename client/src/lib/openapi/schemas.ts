@@ -122,6 +122,24 @@ export const $StopData = {
 		name: {
 			type: 'string',
 			isRequired: true
+		},
+		position: {
+			type: 'any-of',
+			contains: [
+				{
+					type: 'array',
+					contains: {
+						type: 'number'
+					}
+				},
+				{
+					type: 'null'
+				}
+			],
+			isRequired: true
+		},
+		distance: {
+			type: 'number'
 		}
 	}
 } as const;

@@ -11,6 +11,7 @@ token=environ.get("ODPT_TOKEN", None)
 parser=argparse.ArgumentParser()
 parser.add_argument("company")
 parser.add_argument("-token", default=token, required=False)
+parser.add_argument("--skip-line", action="store_true", dest="skip")
 args=parser.parse_args()
 token=args.token
 
@@ -45,6 +46,8 @@ async def main():
             stops_name_db[stop.dctitle]=st
         else:
             st=stops_name_db[stop.dctitle]
+        if st.position is None or (stop.geolat is not None and stop.geolong is not None):
+            st.position=[stop.geolat, stop.geolong]
         if stop.owlsame_as not in st:
             st.odpt_ids.append(stop.owlsame_as)
         stops_db[stop.owlsame_as]=st
@@ -53,6 +56,9 @@ async def main():
     for i, st in enumerate(stops_name_db.values()):
         print(f"[3/5] Saving changes... {((i+1)/count)*100:.1f}%\r", end="")
         await st.save()
+    if args.skip:
+        print("\n[4/5] Getting Lines... Skip!\n[5/5] Registering Lines... Skip!", flush=True)
+        return
     print("\n[4/5] Getting Lines... ", end="", flush=True)
     lines=await data_dump_operations_dump.asyncio(client=client, aclconsumer_key=token, rdf_type="odpt:BusroutePattern")
     if not lines:

@@ -17,6 +17,10 @@ export type SearchData = {
 	SearchSearch: {
 		searchWord: string;
 	};
+	SearchSearchPosition: {
+		lat: number;
+		long: number;
+	};
 };
 
 export type CheckStopData = {
@@ -119,6 +123,31 @@ export class SearchService {
 			url: '/search/',
 			query: {
 				search_word: searchWord
+			},
+			errors: {
+				400: `Bad Request`,
+				401: `Unauthorized`,
+				404: `Not Found`,
+				422: `Validation Error`
+			}
+		});
+	}
+
+	/**
+	 * Search Position
+	 * @returns StopData Successful Response
+	 * @throws ApiError
+	 */
+	public static searchSearchPosition(
+		data: SearchData['SearchSearchPosition']
+	): CancelablePromise<Array<StopData>> {
+		const { lat, long } = data;
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/search/position',
+			query: {
+				lat,
+				long
 			},
 			errors: {
 				400: `Bad Request`,

@@ -4,9 +4,18 @@
     let stops: StopData[];
     let filteredStops: StopData[] = []; // フィルタリングされた候補リスト
     let selectedStop: StopData|undefined = undefined; // 選択された停留所
-    onMount(async () => {
-        stops=await SearchService.searchSearch({searchWord:""})
-    })
+    // onMount(async () => {
+    //     stops=[]//await SearchService.searchSearch({searchWord:""})
+    // })
+    function searchGeo(){
+        navigator.geolocation.getCurrentPosition((position)=>{
+            SearchService.searchSearchPosition({lat:position.coords.latitude, long:position.coords.longitude}).then((stops)=>{
+                filteredStops=stops;
+            })
+        }, ()=>{
+            showNotification({"title":"現在地の取得に失敗しました", kind:"warn"})
+        })
+    }
     async function searchStops() {
         if (searchQuery.length > 0) {
             filteredStops=await SearchService.searchSearch({searchWord:searchQuery})
@@ -33,8 +42,7 @@
 	import { goto } from '$app/navigation';
 	import { showNotification } from '$lib/notification';
 	import { SearchService, type StopData } from '$lib/openapi';
-	import { onMount } from 'svelte';
-    
+	import Button from 'flowbite-svelte/Button.svelte';
     
 </script>
 
@@ -50,7 +58,7 @@
                 class="input input-bordered w-full dark:bg-black"
                 bind:value={searchQuery}
                 on:input={searchStops}
-                placeholder="停留所を検索"
+                placeholder="行き先の停留所を入力してください"
             />
             <!-- 検索候補の表示 -->
             {#if filteredStops.length > 0}
@@ -76,12 +84,18 @@
         {/if}
 
         <!-- カメラを起動ボタン -->
-        <button 
-            class="btn btn-primary mt-4" 
+        <Button
+            class="mt-4" 
             on:click={goToCamera}
         >
             カメラを起動
-        </button>
+        </Button>
+        <Button
+            class="mt-4" 
+            on:click={searchGeo}
+        >
+            現在地から検索
+        </Button>
     </section>
 </main>
 
