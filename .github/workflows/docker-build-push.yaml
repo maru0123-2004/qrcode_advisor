@@ -20,9 +20,7 @@ jobs:
       - ${{ matrix.platform }}
     strategy:
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
+        platform: ${{ fromJson(vars.ARCHS) }}
     permissions:
       contents: read
       packages: write
