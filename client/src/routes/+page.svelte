@@ -33,6 +33,7 @@
 	import { goto } from '$app/navigation';
 	import { showNotification } from '$lib/notification';
 	import { SearchService, type StopData } from '$lib/openapi';
+	import { Button } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
     
     
@@ -50,7 +51,7 @@
                 class="input input-bordered w-full dark:bg-black"
                 bind:value={searchQuery}
                 on:input={searchStops}
-                placeholder="停留所を検索"
+                placeholder="行き先の停留所を入力してください"
             />
             <!-- 検索候補の表示 -->
             {#if filteredStops.length > 0}
@@ -76,12 +77,12 @@
         {/if}
 
         <!-- カメラを起動ボタン -->
-        <button 
-            class="btn btn-primary mt-4" 
+        <Button
+            class="mt-4" 
             on:click={goToCamera}
         >
             カメラを起動
-        </button>
+        </Button>
     </section>
 </main>
 
