@@ -7,6 +7,15 @@
     // onMount(async () => {
     //     stops=[]//await SearchService.searchSearch({searchWord:""})
     // })
+    function searchGeo(){
+        navigator.geolocation.getCurrentPosition((position)=>{
+            SearchService.searchSearchPosition({lat:position.coords.latitude, long:position.coords.longitude}).then((stops)=>{
+                filteredStops=stops;
+            })
+        }, ()=>{
+            showNotification({"title":"現在地の取得に失敗しました", kind:"warn"})
+        })
+    }
     async function searchStops() {
         if (searchQuery.length > 0) {
             filteredStops=await SearchService.searchSearch({searchWord:searchQuery})
@@ -33,9 +42,7 @@
 	import { goto } from '$app/navigation';
 	import { showNotification } from '$lib/notification';
 	import { SearchService, type StopData } from '$lib/openapi';
-	import { Button } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
-    
+	import Button from 'flowbite-svelte/Button.svelte';
     
 </script>
 
@@ -82,6 +89,12 @@
             on:click={goToCamera}
         >
             カメラを起動
+        </Button>
+        <Button
+            class="mt-4" 
+            on:click={searchGeo}
+        >
+            現在地から検索
         </Button>
     </section>
 </main>
