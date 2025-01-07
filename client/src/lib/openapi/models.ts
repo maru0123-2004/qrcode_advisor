@@ -34,6 +34,8 @@ export type Operator = {
 export type StopData = {
 	stop_id: string;
 	name: string;
+	position: Array<number> | null;
+	distance?: number;
 };
 
 export type Token = {

@@ -5,7 +5,7 @@
     let filteredStops: StopData[] = []; // フィルタリングされた候補リスト
     let selectedStop: StopData|undefined = undefined; // 選択された停留所
     onMount(async () => {
-        stops=await SearchService.searchSearch({searchWord:""})
+        stops=[]//await SearchService.searchSearch({searchWord:""})
     })
     async function searchStops() {
         if (searchQuery.length > 0) {
