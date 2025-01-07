@@ -25,9 +25,9 @@
 	}
 </script>
 <Navbar>
-	<NavBrand href="/" class="dark:bg-gray-500">
-		<img src="/logo.png" alt="Logo" class="m-1 h-6 sm:h-9" />
-		<img src="/title.png" alt="Title" class="m-1 h-6 sm:h-9" />
+	<NavBrand href="/" class="dark:bg-gray-500 rounded-md">
+		<img src="/favicon.png" alt="Logo" class="m-1 h-6 sm:h-9" />
+		<!-- <img src="/title.png" alt="Title" class="m-1 h-6 sm:h-9" /> -->
 	</NavBrand>
 	<!-- <NavHamburger /> -->
 	<NavUl>
