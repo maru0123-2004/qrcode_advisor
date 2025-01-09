@@ -12,8 +12,8 @@
             SearchService.searchSearchPosition({lat:position.coords.latitude, long:position.coords.longitude}).then((stops)=>{
                 filteredStops=stops;
             })
-        }, ()=>{
-            showNotification({"title":"現在地の取得に失敗しました", kind:"warn"})
+        }, (e)=>{
+            showNotification({"title":"現在地の取得に失敗しました", "subtitle":e.message,kind:"warn"})
         })
     }
     async function searchStops() {
