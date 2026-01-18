@@ -9,6 +9,7 @@ from ..exceptions import APIError, NotFound
 from ..models.db.stop import Stop
 from ..models.db.line_to_stop import LineStop
 from ..config import Settings
+from ..models.response.checkstop import CheckStop
 
 router=APIRouter(tags=["CheckStop"])
 client=Client("http://api.odpt.org/api/v4/")
@@ -24,7 +25,7 @@ async def get_bus(operator:str, number:int) -> Union[Bus, None]:
     except:
         return None
 
-@router.post("/", response_model=bool)
+@router.post("/", response_model=CheckStop)
 async def checkStop(dest_id: UUID, qrdata: str):
     dest = await Stop.get_or_none(id=dest_id)
     if dest is None:
@@ -40,9 +41,8 @@ async def checkStop(dest_id: UUID, qrdata: str):
         raise APIError(status_code=500, detail="conflicted")
     dest_ls = await LineStop.get_or_none(stop=dest, line__odpt_id=bus.odptbusroute_pattern)
     if dest_ls is None:
-        return False
-    #From以降ならOK
+        return CheckStop(is_stopping=False)
     if prev_ls.order<=dest_ls.order and dest_ls.order<=end_ls.order:
-        return True
+        return CheckStop(is_stopping=True, stops=[])
     else:
-        return False
+        return CheckStop(is_stopping=False)
